@@ -8,26 +8,38 @@
 - name: Install the apt key for ubuntu
   apt_key: id=7F0CEB10 url="http://docs.mongodb.org/10gen-gpg-key.asc"
   when: ansible_os_family == "Debian"
+  tags:
+    - packages
 
 - name: Install the python pycurl library
   apt: name=python-pycurl state=installed update_cache=yes
   when: ansible_os_family == "Debian"
+  tags:
+    - packages
 
 - name: Install the repository for Ubuntu mongodb
   apt_repository: repo="deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" state=present
   when: ansible_os_family == "Debian"
-  
+  tags:
+    - packages
+
 - name: Install the libselinux module
   yum: name=libselinux-python state=installed
   when: ansible_os_family == "RedHat"
+  tags:
+    - packages
 
 - name: Create the repository for 10Gen
   copy: src=10gen.repo dest=/etc/yum.repos.d/10gen.repo
   when: ansible_os_family == "RedHat"
+  tags:
+    - packages
 
 - name: Create the EPEL Repository.
   copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
   when: ansible_os_family == "RedHat"
+  tags:
+    - packages
 
 - name: Create the mongod user
   user: name={{ mongo_user }} comment="MongoD"
@@ -42,11 +54,15 @@
   yum: name={{ item }} state=installed
   with_items: mongod_pkgs
   when: ansible_os_family == "RedHat"
+  tags:
+    - packages
 
 - name: Install the mongodb package
   apt: name={{ item }} state=installed update_cache=yes
   with_items: mongod_pkgs
   when: ansible_os_family == "Debian"
+  tags:
+    - packages
 
 - name: create data directory for mongodb
   file: path={{ mongod_datadir_prefix }}/mongo-{{ mongod_port }} state=directory owner={{ mongo_user }} group={{ mongo_group }}
