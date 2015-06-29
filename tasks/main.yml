@@ -97,8 +97,8 @@
   template: src=repset_init.j2 dest=/tmp/repset_init.js
   when: mongod_replication and (mongod_repl_master == inventory_hostname or mongod_repl_master == ansible_hostname)
 
-- name: Pause for a while
-  pause: seconds=40
+- name: Wait for mongod
+  wait_for: port={{ mongod_port }}
   when: mongod_replication
 
 - name: Initialize the replication set
