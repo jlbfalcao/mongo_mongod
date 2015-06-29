@@ -86,7 +86,7 @@
   copy: src=secret dest={{ mongod_datadir_prefix }}/secret owner={{ mongo_user }} group={{ mongo_group }} mode=0400
 
 - name: Start the mongodb service for redhat variants
-  command: creates=/var/lock/subsys/mongod-{{ mongod_port }} /etc/init.d/mongod-{{ mongod_port }} start
+  service: name=mongod-{{ mongod_port }} state=started enabled=yes
   when: ansible_os_family == "RedHat"
 
 - name: Start the mongodb service for Ubuntu variants
