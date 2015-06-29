@@ -72,7 +72,7 @@ start()
 stop()
 {
   echo -n $"Stopping mongod: "
-  killproc -p "$PIDFILE" -d 300 /usr/bin/mongod
+  kill $(cat "$PIDFILE")
   RETVAL=$?
   echo
   [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/mongod-{{ mongod_port }}
