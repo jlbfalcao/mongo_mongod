@@ -100,7 +100,7 @@ case "$1" in
     [ -f /var/lock/subsys/mongod ] && restart || :
     ;;
   status)
-    status $mongod
+    status -p "$PIDFILE" $mongod
     RETVAL=$?
     ;;
   *)
